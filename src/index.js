@@ -125,7 +125,7 @@ export default class Carousel extends React.Component {
     this.getlockScrollEvents().lockTouchScroll();
 
     const heightCheckDelay = 200;
-    const initializeHeight = delay => {
+    const initializeHeight = (delay) => {
       this.timers.push(
         setTimeout(() => {
           // If slideHeight is greater than zero, then
@@ -243,7 +243,7 @@ export default class Carousel extends React.Component {
         this.setSlideHeightAndWidth();
       });
 
-      const observeChildNodeMutation = node => {
+      const observeChildNodeMutation = (node) => {
         this.childNodesMutationObs.observe(node, {
           attributeFilter: ['style'],
           attributeOldValue: false,
@@ -270,7 +270,7 @@ export default class Carousel extends React.Component {
   }
 
   getlockScrollEvents() {
-    const blockEvent = e => {
+    const blockEvent = (e) => {
       if (this.state.dragging) {
         const direction = swipeDirection(
           this.touchObject.startX,
@@ -312,7 +312,7 @@ export default class Carousel extends React.Component {
     }
 
     return {
-      onTouchStart: e => {
+      onTouchStart: (e) => {
         this.touchObject = {
           startX: e.touches[0].pageX,
           startY: e.touches[0].pageY
@@ -323,7 +323,7 @@ export default class Carousel extends React.Component {
           dragging: true
         });
       },
-      onTouchMove: e => {
+      onTouchMove: (e) => {
         const direction = swipeDirection(
           this.touchObject.startX,
           e.touches[0].pageX,
@@ -375,11 +375,11 @@ export default class Carousel extends React.Component {
             : 0
         });
       },
-      onTouchEnd: e => {
+      onTouchEnd: (e) => {
         this.handleSwipe(e);
         this.handleMouseOut();
       },
-      onTouchCancel: e => {
+      onTouchCancel: (e) => {
         this.handleSwipe(e);
       }
     };
@@ -396,7 +396,7 @@ export default class Carousel extends React.Component {
     return {
       onMouseOver: this.handleMouseOver,
       onMouseOut: this.handleMouseOut,
-      onMouseDown: e => {
+      onMouseDown: (e) => {
         if (e.preventDefault) {
           e.preventDefault();
         }
@@ -411,7 +411,7 @@ export default class Carousel extends React.Component {
         });
       },
 
-      onMouseMove: e => {
+      onMouseMove: (e) => {
         if (!this.state.dragging) {
           return;
         }
@@ -465,7 +465,7 @@ export default class Carousel extends React.Component {
         });
       },
 
-      onMouseUp: e => {
+      onMouseUp: (e) => {
         if (
           this.touchObject.length === 0 ||
           this.touchObject.length === undefined
@@ -477,7 +477,7 @@ export default class Carousel extends React.Component {
         this.handleSwipe(e);
       },
 
-      onMouseLeave: e => {
+      onMouseLeave: (e) => {
         if (!this.state.dragging) {
           return;
         }
@@ -609,9 +609,9 @@ export default class Carousel extends React.Component {
 
   getKeyCodeMap(keyCodeConfig) {
     const keyCodeMap = {};
-    Object.keys(keyCodeConfig).forEach(actionName => {
+    Object.keys(keyCodeConfig).forEach((actionName) => {
       keyCodeConfig[actionName].forEach(
-        keyCode => (keyCodeMap[keyCode] = actionName)
+        (keyCode) => (keyCodeMap[keyCode] = actionName)
       );
     });
     return keyCodeMap;
@@ -761,7 +761,7 @@ export default class Carousel extends React.Component {
       if (index >= this.state.slideCount) {
         props.beforeSlide(this.state.currentSlide, 0);
         this.setState(
-          prevState => ({
+          (prevState) => ({
             left: props.vertical
               ? 0
               : this.getTargetLeft(
@@ -798,7 +798,7 @@ export default class Carousel extends React.Component {
             : this.state.slideCount - this.state.slidesToScroll;
         props.beforeSlide(this.state.currentSlide, endSlide);
         this.setState(
-          prevState => ({
+          (prevState) => ({
             left: props.vertical
               ? 0
               : this.getTargetLeft(0, prevState.currentSlide),
@@ -987,10 +987,15 @@ export default class Carousel extends React.Component {
   setDimensions(props, stateCb = () => {}) {
     props = props || this.props;
 
-    const { slidesToShow, cellAlign, scrollMode } = getPropsByTransitionMode(
-      props,
-      ['slidesToShow', 'cellAlign', 'scrollMode']
-    );
+    const {
+      slidesToShow,
+      cellAlign,
+      scrollMode
+    } = getPropsByTransitionMode(props, [
+      'slidesToShow',
+      'cellAlign',
+      'scrollMode'
+    ]);
 
     const frame = this.frame;
     const { slideHeight, slideWidth } = this.calcSlideHeightAndWidth(props);
@@ -1024,7 +1029,7 @@ export default class Carousel extends React.Component {
   }
 
   getChildNodes() {
-    return this.frame.childNodes[0].childNodes;
+    return Array.from(this.frame.childNodes[0].childNodes);
   }
 
   getCurrentChildNodeImg() {
@@ -1062,7 +1067,7 @@ export default class Carousel extends React.Component {
             currentSlide: this.state.currentSlide,
             defaultControlsConfig: this.props.defaultControlsConfig,
             frameWidth: this.state.frameWidth,
-            goToSlide: index => this.goToSlide(index),
+            goToSlide: (index) => this.goToSlide(index),
             left: this.state.left,
             nextSlide: () => this.nextSlide(),
             previousSlide: () => this.previousSlide(),
@@ -1150,7 +1155,7 @@ export default class Carousel extends React.Component {
         )}
         <div
           className="slider-frame"
-          ref={frame => (this.frame = frame)}
+          ref={(frame) => (this.frame = frame)}
           style={frameStyles}
           {...touchEvents}
           {...mouseEvents}
@@ -1338,9 +1343,9 @@ Carousel.defaultProps = {
   onResize() {},
   pauseOnHover: true,
   renderAnnounceSlideMessage: defaultRenderAnnounceSlideMessage,
-  renderBottomCenterControls: props => <PagingDots {...props} />,
-  renderCenterLeftControls: props => <PreviousButton {...props} />,
-  renderCenterRightControls: props => <NextButton {...props} />,
+  renderBottomCenterControls: (props) => <PagingDots {...props} />,
+  renderCenterLeftControls: (props) => <PreviousButton {...props} />,
+  renderCenterRightControls: (props) => <NextButton {...props} />,
   scrollMode: 'remainder',
   slideIndex: 0,
   slideListMargin: 10,
